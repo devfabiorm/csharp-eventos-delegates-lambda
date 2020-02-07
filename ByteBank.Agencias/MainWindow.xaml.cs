@@ -23,13 +23,14 @@ namespace ByteBank.Agencias
     {
 
         private readonly ByteBankEntities _byteBankContext = new ByteBankEntities();
-        private readonly AgenciasListBox lstAgencias;
+        private readonly ListBox lstAgencias;
         public MainWindow()
         {
             InitializeComponent();
 
-            lstAgencias = new AgenciasListBox(this);
+            lstAgencias = new ListBox();
             AtualizaControles();
+            AtualizarListaAgencias();
         }
 
         private void AtualizaControles()
@@ -40,13 +41,47 @@ namespace ByteBank.Agencias
             Canvas.SetTop(lstAgencias, 15);
             Canvas.SetLeft(lstAgencias, 15);
 
+            lstAgencias.SelectionChanged += new SelectionChangedEventHandler(lstAgencias_SelectionChanged);
+
             container.Children.Add(lstAgencias);
 
+            btnEditar.Click += new RoutedEventHandler(btnEditar_Click);
+        }
+
+        private void btnEditar_Click(object sender, RoutedEventArgs e)
+        {
+            var agenciaAtual = (Agencia)lstAgencias.SelectedItem;
+            var janelaEdicao = new EditarAgencias(agenciaAtual);
+            var resultado = janelaEdicao.ShowDialog().Value; //Trava a tela de trás até que a tela da frente seja fechada
+
+            if (resultado)
+            {
+                //Usuario clicou em Ok
+            }
+            else
+            {
+                //Usuario clicou em Cancelar
+            }
+        }
+
+        private void AtualizarListaAgencias()
+        {
             lstAgencias.Items.Clear();
 
             var agencias = _byteBankContext.Agencias;
             foreach (var agencia in agencias)
                 lstAgencias.Items.Add(agencia);
+        }
+
+        private void lstAgencias_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var agenciaSelecionada = (Agencia)lstAgencias.SelectedItem;
+
+            txtNumero.Text = agenciaSelecionada.Numero;
+            txtNome.Text = agenciaSelecionada.Nome;
+            txtTelefone.Text = agenciaSelecionada.Telefone;
+            txtDescricao.Text = agenciaSelecionada.Descricao;
+            txtEndereco.Text = agenciaSelecionada.Endereco;
         }
 
         private void btnExcluir_Click(object sender, RoutedEventArgs e)
