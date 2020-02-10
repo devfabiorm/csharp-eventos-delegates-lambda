@@ -146,6 +146,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ValidacaoTextBox.cs" />
     <Page Include="EditarAgencias.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

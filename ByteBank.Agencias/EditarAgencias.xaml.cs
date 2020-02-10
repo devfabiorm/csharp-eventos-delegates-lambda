@@ -66,22 +66,24 @@ namespace ByteBank.Agencias
             //btnOk.Click += new RoutedEventHandler(Fechar);
             //btnCancelar.Click += new RoutedEventHandler(Fechar);
 
-            txtNome.TextChanged += ValidaCampoNuloVazio;
-            txtNumero.TextChanged += ValidaCampoNuloVazio;
-            txtTelefone.TextChanged += ValidaCampoNuloVazio;
-            txtDescricao.TextChanged += ValidaCampoNuloVazio;
-            txtEndereco.TextChanged += ValidaCampoNuloVazio;
+            txtNome.Validacao += ValidaCampoNuloVazio;
+
+            txtNumero.Validacao += ValidaCampoNuloVazio;
+            txtNumero.Validacao += ValidaSomenteDigito;
+
+            txtTelefone.Validacao += ValidaCampoNuloVazio;
+            txtDescricao.Validacao += ValidaCampoNuloVazio;
+            txtEndereco.Validacao += ValidaCampoNuloVazio;
+        }
+        
+        private bool ValidaSomenteDigito(string texto)
+        {
+           return texto.All(Char.IsDigit);
         }
 
-        
-
-        private void ValidaCampoNuloVazio(object sender, EventArgs e)
+        private bool ValidaCampoNuloVazio(string texto)
         {
-            var txt = sender as TextBox;
-            var validaCampoVazio = string.IsNullOrEmpty(txt.Text.Trim());
-            txt.Background = validaCampoVazio 
-            ? new SolidColorBrush(Colors.OrangeRed)
-            : new SolidColorBrush(Colors.White);
+            return !string.IsNullOrEmpty(texto.Trim());
         }
 
 
